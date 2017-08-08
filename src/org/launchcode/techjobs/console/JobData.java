@@ -51,7 +51,10 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        return allJobs;
+        // returns a copy of allJobs(Bonus Mission)
+        Object allJobsCopy = allJobs.clone();
+        return (ArrayList<HashMap<String, String>>) allJobsCopy;
+        // return allJobs; (previous return value)
     }
 
     /**
@@ -76,8 +79,34 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) { // ignores case without changing case
+                if (!jobs.contains(row)) // prevents duplicate entries
                 jobs.add(row);
+            }
+        }
+
+        return jobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        // search for a string within each of the given columns
+        // do not list the same listing more than once
+        // use loops and collection methods
+        // call findByValue somewhere in main - if searchField = "all"
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            for (String column : row.keySet()) {
+                String aValue = row.get(column);
+
+                if (aValue.toLowerCase().contains(value.toLowerCase())) { // ignores case without changing case
+                    if (!jobs.contains(row)) // prevents duplicate entries
+                    jobs.add(row);
+                }
             }
         }
 
